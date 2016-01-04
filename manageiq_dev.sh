@@ -5,25 +5,29 @@ sudo systemctl enable postgresql
 sudo systemctl start postgresql
 sudo su postgres -c "psql -c \"CREATE ROLE root SUPERUSER LOGIN PASSWORD 'smartvm'\""
 
-#install rubyversion
-git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 
-source ~/.bash_profile
 
 #configure ruby version
+echo source /usr/local/share/chruby/chruby.sh >> ~/.bashrc
+echo source /usr/local/share/chruby/auto.sh >> ~/.bashrc
+echo chruby ruby-2.2 >> ~/.bashrc
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
 cd manageiq
 echo "continuing in manageiq/"
 
-#Configure rbenv
-
-rbenv install 2.2.3
-rbenv local 2.2.3
+#Configure ruby
+ruby-install ruby 2.2
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+chruby ruby-2.2
 gem install bundler
 gem install nokogiri -v '1.6.6.2'
+cd ~/manageiq
+echo "continuing in manageiq/"
 bundle install
+
+
 
 #Copy the development keys to place
 #Security risk, don't do this in production

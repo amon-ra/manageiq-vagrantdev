@@ -12,12 +12,12 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "centos/7"
+  config.vm.box = "mhubbard/centos7"
 
   config.vm.hostname="manageiq-devel"
 
-  config.vm.provider "libvirt" do |libvirt|
-    libvirt.driver="kvm"
+  config.vm.provider "virtualbox" do |libvirt|
+    #libvirt.driver="kvm"
     libvirt.memory=3072
     libvirt.cpus=2
   end 
@@ -33,11 +33,11 @@ Vagrant.configure(2) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network "forwarded_port", guest: 80, host: 8080
  
- config.vm.network "forwarded_port", guest: 3000, host:3000, auto_correct: true
+  config.vm.network "forwarded_port", guest: 3000, host:3000, auto_correct: true
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+  #config.vm.network "public_network", ip: "192.168.33.14", :adapter=>3
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -80,7 +80,8 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
   # SHELL
 
-  config.vm.synced_folder "../manageiq", "/home/vagrant/manageiq"
+  config.vm.synced_folder "../manageiq", "/home/vagrant/manageiq" 
   config.vm.provision :shell, :path => "install_os.sh"
   config.vm.provision :shell, :path => "manageiq_dev.sh", :privileged => false
+
 end
